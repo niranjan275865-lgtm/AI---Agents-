@@ -1,0 +1,143 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -448,
+        -128
+      ],
+      "id": "1a36af4a-0781-4a36-b4f2-c2c99f1cf9b2",
+      "name": "When chat message received",
+      "webhookId": "71b0ea14-9d5e-48ae-84aa-4ab31be55c0a"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a helpful AI travel and research assistant.\nProvide accurate, concise, and well-structured answers using real-time data when available."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -160,
+        -128
+      ],
+      "id": "d245ce2c-37a4-44e9-b4b8-20c191d92d41",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -96,
+        96
+      ],
+      "id": "8327aa42-59da-4ea9-9c3a-3c35605f5dd3",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolSerpApi",
+      "typeVersion": 1,
+      "position": [
+        32,
+        96
+      ],
+      "id": "c8ee9d5c-784a-4468-b514-ab3a407fbef4",
+      "name": "SerpAPI",
+      "credentials": {
+        "serpApi": {
+          "id": "hG9JvYtOKVXkRHhO",
+          "name": "SerpAPI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "llama-3.3-70b-versatile",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -304,
+        80
+      ],
+      "id": "ac3afb30-8cfa-4408-938e-6539dbd88156",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "ezAtij4C9m6OffYp",
+          "name": "Groq account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SerpAPI": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "93fe51f4-b46f-4071-853e-82457a257613",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0c4a6db706fb4fb7ab44943098996948d53ef6d32a8b152c4ae972775d94eb98"
+  },
+  "id": "wKGgQf4GLRH261pT",
+  "tags": []
+}
