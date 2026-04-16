@@ -1,0 +1,359 @@
+{
+  "name": "telegram_ai_agent_worlkflow.json",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are a smart Animal Feeding Assistant for dairy and livestock management.\n\nYour role is to provide accurate information, manage feeding records, and assist with feed planning for animals such as cows, buffaloes, goats, and poultry.\n\nRules:\n\n1. When a user sends their first message (like \"hi\", \"hello\"), reply with:\n\"Welcome to the Animal Feeding Management System! 🐄\nHow can I assist you today?\"\n- 🥣 Feed Planning\n- 📋 Dana List\n- 📦 Place an Order\n- 📊 Feeding Records\n- ❓ FAQ / Information\n\n(Keep the tone friendly, professional, and suitable for farm management.)\n\n2. If the user wants to place an order:\n- Assist them step by step by asking what they need.\n- Collect the following details:\n  • Customer Name  \n  • Feed Item(s)  \n  • Quantity  \n  • Delivery Address  \n  • Contact Number  \n  • Preferred Delivery Date\n- Confirm availability before finalizing the order.\n- If available, respond:\n  \"Your order for [Item] (Quantity) has been confirmed.\"\n- If unavailable, respond:\n  \"Sorry, [Item] is out of stock. Please choose an alternative.\"\n- Provide a clear order summary before confirmation.\n\n3. If the user wants \"Feed Planning\":\n- Ask step by step: animal type, breed, age, weight, and milk yield.\n- Suggest a balanced diet including green fodder, dry fodder, concentrates (dana), minerals, and water.\n\n4. If the user wants a \"Dana List\":\n- Provide a structured list of concentrate feed ingredients with clear details.\n\n5. If the user wants \"Feeding Records\":\n- Collect and organize details such as date, animal type, feed items, and quantity.\n\n6. If the user wants \"FAQ / Information\":\n- Provide short, clear, and professional answers related to animal nutrition and feeding practices.\n\n7. Feeding Guidelines:\n- Maintain a roughage-to-concentrate ratio of approximately 60:40.\n- Recommend 1 kg of concentrate per 2–2.5 liters of milk produced.\n- Include mineral mixture and clean drinking water daily.\n- Introduce feed changes gradually over 7–10 days.\n\n8. Data and Safety Rules:\n- Provide accurate and reliable information.\n- Avoid assumptions; ask for clarification when necessary.\n- Follow standard livestock nutrition practices.\n\n9. Response Standards:\n- Keep responses clear, concise, and structured.\n- Use simple and professional language.\n- Present information using bullet points or tables when appropriate.\n- Maintain consistency and accuracy in all outputs."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -144,
+        -208
+      ],
+      "id": "b958c293-3bf6-4bf4-ab05-50367058a260",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.message.chat.id }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -256,
+        16
+      ],
+      "id": "9fa2415c-5e8c-4be0-922e-846e468e27b6",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1xtcCjawvNZdhcPRZYPXG2ETBNdSoCfNW4-dxiX6L3LY",
+          "mode": "list",
+          "cachedResultName": "Animal_Feeding",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xtcCjawvNZdhcPRZYPXG2ETBNdSoCfNW4-dxiX6L3LY/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "items",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xtcCjawvNZdhcPRZYPXG2ETBNdSoCfNW4-dxiX6L3LY/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        240,
+        0
+      ],
+      "id": "045e2d14-1ccc-402d-9980-01fd3a2231d1",
+      "name": "items",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "94e0trsrs6iZ8B5A",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1LWyfLl645TH4vkhai88ZILBWPQR9URIyMc7ueipx_WQ",
+          "mode": "list",
+          "cachedResultName": "Copy of Animal_Feeding",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1LWyfLl645TH4vkhai88ZILBWPQR9URIyMc7ueipx_WQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 341460053,
+          "mode": "list",
+          "cachedResultName": "FAQ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1LWyfLl645TH4vkhai88ZILBWPQR9URIyMc7ueipx_WQ/edit#gid=341460053"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        96,
+        0
+      ],
+      "id": "e05e6fd0-fee0-4223-8d62-b6e3bdf9fc3c",
+      "name": "FAQ",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "94e0trsrs6iZ8B5A",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1LWyfLl645TH4vkhai88ZILBWPQR9URIyMc7ueipx_WQ",
+          "mode": "list",
+          "cachedResultName": "Copy of Animal_Feeding",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1LWyfLl645TH4vkhai88ZILBWPQR9URIyMc7ueipx_WQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1972213376,
+          "mode": "list",
+          "cachedResultName": "Confirmation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1LWyfLl645TH4vkhai88ZILBWPQR9URIyMc7ueipx_WQ/edit#gid=1972213376"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Order Date         ": "={{ $now.format('yyyy-MM-dd hh-mm-ss a') }}",
+            "Customer name": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Customer_name', ``, 'string') }}",
+            "Food item ": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Food_item_', ``, 'string') }}",
+            "Quantity Ordered": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Quantity_Ordered', ``, 'string') }}",
+            "Status": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Status', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Customer name",
+              "displayName": "Customer name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Food item ",
+              "displayName": "Food item ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Quantity Ordered",
+              "displayName": "Quantity Ordered",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Order Date         ",
+              "displayName": "Order Date         ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        -64,
+        -16
+      ],
+      "id": "3c31080c-7cca-41bd-a1e9-8c0fc43199bc",
+      "name": "Confirmation",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "94e0trsrs6iZ8B5A",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "llama-3.3-70b-versatile",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -464,
+        16
+      ],
+      "id": "2b41da43-5960-4503-9388-a230b380679f",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "MZlZhmc5MY5mh9dT",
+          "name": "Groq account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -464,
+        -224
+      ],
+      "id": "06c96a12-6fb7-46f5-932a-ef09e8e33842",
+      "name": "Telegram Trigger",
+      "webhookId": "dd939037-af40-4ebc-9f5a-32420989cf67",
+      "credentials": {
+        "telegramApi": {
+          "id": "3mqM2dj11PN6eI5O",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        208,
+        -160
+      ],
+      "id": "cd80a5c6-1f4a-4bbb-87e7-a31a41a2a823",
+      "name": "Send a text message",
+      "webhookId": "0428b9e3-a313-4542-a6ad-ce62cfee2681",
+      "credentials": {
+        "telegramApi": {
+          "id": "3mqM2dj11PN6eI5O",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "items": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FAQ": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Confirmation": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "517a4e8b-8db3-4d55-955e-405573b28eba",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0c4a6db706fb4fb7ab44943098996948d53ef6d32a8b152c4ae972775d94eb98"
+  },
+  "id": "xkN2I3gEP8NAVYlQ",
+  "tags": []
+}
