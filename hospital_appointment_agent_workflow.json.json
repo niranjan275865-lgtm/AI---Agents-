@@ -1,0 +1,268 @@
+{
+  "name": "hospital_appointment_agent_workflow.json",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Appointment Details",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Full name"
+            },
+            {
+              "fieldLabel": "Mobile number",
+              "fieldType": "number"
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email"
+            },
+            {
+              "fieldLabel": "Services",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "General checkup"
+                  },
+                  {
+                    "option": "Dental checkup"
+                  },
+                  {
+                    "option": "Orthopaedic"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.5,
+      "position": [
+        -384,
+        -112
+      ],
+      "id": "b439116b-4d07-426e-8d41-58b47e82c33d",
+      "name": "On form submission",
+      "webhookId": "692c6466-ff1f-4418-849c-26283afa9bc6"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.Email }}",
+        "options": {
+          "systemMessage": "You are a professional healthcare appointment assistant designed to help users schedule, manage, and communicate doctor appointments efficiently and respectfully.\n\nYour responsibilities include:\n- Assisting users in booking, rescheduling, or canceling doctor appointments\n- Collecting necessary details (patient name, doctor name, specialization, preferred date/time, contact details)\n- Providing clear and accurate appointment confirmations\n- Sending professional, polite, and well-structured email communications\n- Maintaining a calm, respectful, and empathetic tone at all times\n\nGuidelines for communication:\n- Always use formal and professional language\n- Be concise, clear, and well-organized in responses\n- Avoid slang, casual tone, or unnecessary emojis\n- Ensure emails are properly formatted with:\n  - Subject line\n  - Greeting\n  - Clear body content\n  - Closing with signature\n\nWhen writing emails:\n- Use polite phrases such as \"Dear\", \"Kindly\", \"Please confirm\", and \"Thank you\"\n- Clearly mention appointment details (date, time, doctor, location if applicable)\n- Confirm or request confirmation when necessary\n- Maintain confidentiality and avoid unnecessary sensitive details\n\nError handling:\n- If information is missing, politely ask for clarification\n- If a request cannot be fulfilled, provide alternative options\n- Never assume medical advice—only assist with scheduling and communication\n\nTone:\n- Professional, courteous, and patient-friendly\n- Neutral and supportive, especially in healthcare contexts\n\nDo not:\n- Provide medical diagnoses or treatment advice\n- Share or store sensitive personal data beyond what is necessary\n- Use informal or unprofessional language\n\nYour goal is to ensure a smooth, reliable, and professional appointment booking and communication experience."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -128,
+        -112
+      ],
+      "id": "34c414bb-70f9-4ac5-8403-6c8e43fe9ab2",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "llama-3.3-70b-versatile",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -224,
+        32
+      ],
+      "id": "4790956e-0b77-4b4c-96ce-8ffa05f1d20f",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "NVnqcY00hyo3OPyy",
+          "name": "Groq account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1D1M_W0n1mR9xS7f9-okAb1B2vTSixLOd6VDyTPoKbKY",
+          "mode": "list",
+          "cachedResultName": "Hospital Booking Agent",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D1M_W0n1mR9xS7f9-okAb1B2vTSixLOd6VDyTPoKbKY/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Details",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D1M_W0n1mR9xS7f9-okAb1B2vTSixLOd6VDyTPoKbKY/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $('On form submission').item.json['Full name'] }}",
+            "Mobile Number": "={{ $('On form submission').item.json['Mobile number'] }}",
+            "Eamil": "={{ $('On form submission').item.json.Email }}",
+            "Service": "={{ $('On form submission').item.json.Services }}",
+            "Appointment Details": "={{ $now.plus({ days: 7 }).set({ hour: 10, minute: 0 }).toFormat('yyyy-MM-dd hh:mm a') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Mobile Number",
+              "displayName": "Mobile Number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Eamil",
+              "displayName": "Eamil",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Service",
+              "displayName": "Service",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Appointment Details",
+              "displayName": "Appointment Details",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        224,
+        -112
+      ],
+      "id": "91f79736-6f82-453a-a277-e9caf8e9a22b",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ERYbsAMo71Xlqxh8",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.Eamil }}",
+        "subject": "Appointment Confirmation",
+        "emailType": "text",
+        "message": "=Hello {{ $('On form submission').item.json['Full name'] }} ,\n\nThank you for submitting your appointment request with our hospital.\n\nWe are pleased to inform you that your appointment has been successfully scheduled with the following details:\n\nPatient Name:  {{ $('On form submission').item.json['Full name'] }}\nService: {{ $('On form submission').item.json.Services }}  \nAppointment Date & Time:  {{ $json['Appointment Details'] }}\n\nPlease ensure that you arrive at the hospital at least 15 minutes prior to your appointment time to complete any necessary registration procedures.\n\nIf you need to reschedule your appointment or require further assistance, kindly reply to this email or contact our support team.\n\nWe appreciate your trust in our healthcare services and look forward to assisting you.\n\nWarm regards,  \nAppointments Team ",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        432,
+        -112
+      ],
+      "id": "40a2e515-79d7-4e42-ae83-f1f38ba35b63",
+      "name": "Send a message",
+      "webhookId": "c881de8d-5de7-41d3-9173-5395b1253c6d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "BzaVZQpH4yWPdCy3",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "06213014-3bf4-4ea1-97f3-9a19b84172c5",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0c4a6db706fb4fb7ab44943098996948d53ef6d32a8b152c4ae972775d94eb98"
+  },
+  "id": "QZTbU7B3yXilN0Eq",
+  "tags": []
+}
