@@ -1,0 +1,231 @@
+{
+  "name": "Newsletter-ai-agent-workflow.json",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 7
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -1504,
+        -464
+      ],
+      "id": "c302de9f-7e02-4c67-a2ae-97dece4d76ce",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "query": "AI agents and Updates",
+        "options": {
+          "include_answer": "advanced"
+        }
+      },
+      "type": "@tavily/n8n-nodes-tavily.tavily",
+      "typeVersion": 1,
+      "position": [
+        -1184,
+        -464
+      ],
+      "id": "acdf6f71-7132-4071-815a-69553c6cb71e",
+      "name": "Research",
+      "credentials": {
+        "tavilyApi": {
+          "id": "hHBMkdqiRUi9p9tD",
+          "name": "Tavily account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "llama-3.3-70b-versatile",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -1120,
+        -256
+      ],
+      "id": "1c5ad7e1-1753-4524-a98a-0e938715e3ab",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "Qn0QdVm9a3uDJogv",
+          "name": "Groq account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.results }}",
+        "options": {
+          "systemMessage": "You are an expert newsletter planner and content strategist.\n\nYou will be given three articles from the past week.\n\nYour task is to:\n1. Analyze all three articles and identify the common theme or narrative.\n2. Create a compelling newsletter title (5–10 words).\n3. Generate a structured newsletter outline that feels cohesive, informative, and engaging.\n\nOutput format:\n\n1. Newsletter Title:\n- A creative, clear, and relevant title (5–10 words)\n\n2. Central Theme:\n- A 2–3 sentence explanation connecting all three articles\n\n3. Main Topics/Sections:\n- Section 1 Title\n  - Summary (4–6 lines)\n- Section 2 Title\n  - Summary (4–6 lines)\n- Section 3 Title\n  - Summary (4–6 lines)\n\n4. Key Insights:\n- 5–7 bullet points summarizing the most important takeaways\n\n5. Suggested Closing Line:\n- A strong, engaging closing sentence for the newsletter\n\nGuidelines:\n- Ensure smooth flow between sections\n- Avoid repetition\n- Keep tone professional but engaging\n- Focus on clarity and value, not fluff"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -976,
+        -464
+      ],
+      "id": "e6fba375-4446-4759-8a43-58d6247e4772",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "sendTo": "niranjan275865@gmail.com",
+        "subject": "={{ $('Research').item.json.query }}",
+        "emailType": "text",
+        "message": "={{ $json.output }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -624,
+        -464
+      ],
+      "id": "9b8eebc9-ea8f-4f6e-8e0c-9d18aca30cc8",
+      "name": "Send a message",
+      "webhookId": "d892def9-04fa-4a0f-b933-0f3b290bcf73",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "mNJsHM1OhAPkILDg",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "AI Agent": [
+      {
+        "json": {
+          "output": "1. Newsletter Title:\n- \"AI Agents: Trends, Adoption, and Future Developments\"\n\n2. Central Theme:\nThe central theme of the three articles is the current state and future of AI agents, including their adoption, development, and potential impact on various industries. The articles discuss the trends, challenges, and opportunities associated with AI agents, as well as their potential to revolutionize the way businesses operate. From the evolution of AI agents to their applications in customer service, finance, and healthcare, the articles provide a comprehensive overview of the AI agent landscape.\n\n3. Main Topics/Sections:\n- Section 1: Introduction to AI Agents\n  - AI agents are being increasingly adopted across various industries, with 88% of companies applying AI in at least one area. However, only 23% of companies have fully autonomous agent systems. The section introduces the concept of AI agents, their types, and their applications.\n- Section 2: Trends and Challenges in AI Agent Adoption\n  - The adoption of AI agents is driven by the need to reduce interaction costs, improve efficiency, and enhance customer experience. However, companies face challenges in scaling AI agents to production, with fewer than one in four successfully doing so. The section discusses the trends, challenges, and opportunities associated with AI agent adoption.\n- Section 3: Future Developments and Predictions\n  - The future of AI agents looks promising, with potential applications in various industries, including customer service, finance, and healthcare. The section discusses the future developments and predictions for AI agents, including the emergence of new roles, such as agent product managers, AI evaluation writers, and human-in-the-loop validators.\n\n4. Key Insights:\n* 88% of companies apply AI in at least one area, but only 23% have fully autonomous agent systems.\n* AI agents can reduce interaction costs by up to 90% compared to traditional service models.\n* Customer service leads AI agent adoption, with companies using AI agents to improve customer experience and reduce costs.\n* The nature of managerial work is shifting from supervising people to orchestrating systems where humans, AI agents, and robots collaborate.\n* New roles are emerging, such as agent product managers, AI evaluation writers, and human-in-the-loop validators.\n* Only one in five companies has a mature governance model for autonomous AI agents.\n* Building AI agents used to require deep technical expertise, but this is changing with the emergence of new tools and platforms.\n\n5. Suggested Closing Line:\nAs the AI agent landscape continues to evolve, it's clear that these intelligent systems will play an increasingly important role in shaping the future of business and industry, and companies that adopt AI agents early will be well-positioned to reap the benefits of improved efficiency, reduced costs, and enhanced customer experience."
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "Research": [
+      {
+        "json": {
+          "query": "AI agents and Updates",
+          "response_time": 1.98,
+          "follow_up_questions": null,
+          "answer": "AI agents—software entities that perceive, reason, plan, and act using large language models and tool integrations—have rapidly moved from experimental prototypes to production‑grade components across industries, with recent surveys showing that while 88 % of firms now use AI in at least one function, only about 23 % have deployed fully autonomous agents and just under a quarter have successfully scaled them, highlighting both growing interest and persistent barriers such as governance, observability, and safety; new capabilities are emerging through platforms like LangChain’s 2024 State of AI Agents report, which spotlights advances in low‑code agent builders, LangGraph’s fine‑grained control, Deep Agents’ planning‑memory‑sub‑agent architecture, and built‑in tracing, evaluation, and deployment tools, while IBM’s AI‑Agent framework emphasizes modular components (perception, learning, memory, planning, communication) and hierarchical orchestration, and industry analysts note a shift in managerial roles toward “agent product managers” and human‑in‑the‑loop validators, a compression of SaaS seat counts by up to 90 % as agents automate interactions, and an expanding ecosystem of domain‑specific agents in customer service, finance, healthcare, and supply chain, all accompanied by heightened focus on ethics, guardrails, and data‑privacy controls to ensure trustworthy, scalable deployments.",
+          "images": [],
+          "results": [
+            {
+              "url": "https://aiagentstore.ai/ai-agent-news/this-week",
+              "title": "Daily AI Agent News - Last 7 Days",
+              "content": "[Token](https://aiagentstore.ai/ai-agent-token). [All AI Agent News This Month](https://aiagentstore.ai/ai-agent-news/2026-april). [AI Agent Marketplace Home](https://aiagentstore.ai/). [Open Claw Earn](https://aiagentstore.ai/claw-earn?ref=ai_agent_news_weekly). [Go to /claw-earn](https://aiagentstore.ai/claw-earn?ref=ai_agent_news_weekly). [Open now](https://aiagentstore.ai/claw-earn?ref=ai_agent_news_weekly). [Workforce Impact (from business side)](https://aiagentstore.ai/ai-agent-news/topic/workforce-impact-business-side)[Workforce Impact (from employee side)](https://aiagentstore.ai/ai-agent-news/topic/workforce-impact-employee-side)[Multi-agent Systems](https://aiagentstore.ai/ai-agent-news/topic/multi-agent-systems)[Ethics & Safety](https://aiagentstore.ai/ai-agent-news/topic/ethics-safety)[Business Automation](https://aiagentstore.ai/ai-agent-news/topic/business-automation)[Marketing](https://aiagentstore.ai/ai-agent-news/topic/marketing)[Trading](https://aiagentstore.ai/ai-agent-news/topic/trading)[Coding](https://aiagentstore.ai/ai-agent-news/topic/coding)[Healthcare](https://aiagentstore.ai/ai-agent-news/topic/healthcare)[Startups](https://aiagentstore.ai/ai-agent-news/topic/startups)[Manufacturing](https://aiagentstore.ai/ai-agent-news/topic/manufacturing)[Education & Learning](https://aiagentstore.ai/ai-agent-news/topic/education-learning)[Legal & Regulatory Frameworks](https://aiagentstore.ai/ai-agent-news/topic/legal-regulatory)[Creative Industries](https://aiagentstore.ai/ai-agent-news/topic/creative-industries)[Scientific Research & Discovery](https://aiagentstore.ai/ai-agent-news/topic/scientific-research)[Data Privacy & Security](https://aiagentstore.ai/ai-agent-news/topic/data-privacy-security)[Agent Collaboration](https://aiagentstore.ai/ai-agent-news/topic/agent-collaboration)[Human-AI Synergy](https://aiagentstore.ai/ai-agent-news/topic/human-ai-synergy)[Human-Agent Trust](https://aiagentstore.ai/ai-agent-news/topic/human-agent-trust)[Agriculture & Food Systems](https://aiagentstore.ai/ai-agent-news/topic/agriculture-food)[Customer Service](https://aiagentstore.ai/ai-agent-news/topic/customer-service)[Infrastructure & City Planning](https://aiagentstore.ai/ai-agent-news/topic/infrastructure-city)[Accessibility & Inclusion](https://aiagentstore.ai/ai-agent-news/topic/accessibility-inclusion). [General AI Agent News](https://aiagentstore.ai/ai-agent-news/this-week). *   [More Customers for Your AI Agent](https://aiagentstore.ai/marketing-for-ai-agents). *   [AI Agent Token](https://aiagentstore.ai/ai-agent-token). *   [Product Insights for Autonomous Agents](https://aiagentstore.ai/product-insights-autonomous-agents). *   [AI Agents Ecosystem](https://aiagentstore.ai/ecosystem). *   [Learn About AI Agents](https://aiagentstore.ai/learn-about-ai-agents). *   [AI Agent Videos](https://aiagentstore.ai/video). *   [AI Agent Integrations](https://aiagentstore.ai/integrations). *   [AI Agent Store Blog](https://aiagentstore.ai/news). *   [Trending AI Agents](https://aiagentstore.ai/get-ai-agent). *   [AI Agents Landscape](https://aiagentstore.ai/ai-agents-landscape). *   [AI Agents Map by industry](https://aiagentstore.ai/ai-agents-map). *   [AI Agents Grid by tag](https://aiagentstore.ai/ai-agents-grid). *   [Open-source vs Closed-source](https://aiagentstore.ai/ai-agents-chart). *   [AI Agents Examples](https://aiagentstore.ai/ai-agents-examples). *   [AI Agents Platform](https://aiagentstore.ai/ai-agents-platform). *   [Marketplace](https://aiagentstore.ai/claw-earn/ai-agent-tasks/available). *   [Post a Task](https://aiagentstore.ai/claw-earn/create). *   [AI Agents by Category](https://aiagentstore.ai/categories). *   [AI Agents by Industry](https://aiagentstore.ai/industries). *   [AI Agents by Tag](https://aiagentstore.ai/tags). *   [AI Agents by Audience](https://aiagentstore.ai/professions). *   [AI Agents by Code Access](https://aiagentstore.ai/code). *   [AI Agents by Pricing](https://aiagentstore.ai/pricing).",
+              "score": 0.6698534,
+              "raw_content": null
+            },
+            {
+              "url": "https://www.langchain.com/stateofaiagents",
+              "title": "LangChain State of AI Agents Report: 2024 Trends",
+              "content": "[![Image 1](https://cdn.prod.website-files.com/65b8cd72835ceeacd4449a53/68e8e270df09334914882b88_Frame%209.svg) Observability Debug and monitor in-depth traces](https://www.langchain.com/langsmith/observability)[![Image 2](https://cdn.prod.website-files.com/65b8cd72835ceeacd4449a53/68e8e270f9e8de1d368764a8_Frame%20206.svg) Evaluation Iterate on prompts and models](https://www.langchain.com/langsmith/evaluation)[![Image 3](https://cdn.prod.website-files.com/65b8cd72835ceeacd4449a53/68e8e2709eef27fc61465416_Frame%20100039.svg) Deployment Ship and scale agents in production](https://www.langchain.com/langsmith/deployment)[![Image 4](https://cdn.prod.website-files.com/65b8cd72835ceeacd4449a53/692e7522b3ef627cb0ec1155_Centralized%20management.svg) Agent Builder New Build no-code agents](https://www.langchain.com/langsmith/agent-builder). [![Image 5](https://cdn.prod.website-files.com/65b8cd72835ceeacd4449a53/68e8e27023585643370a6471_icons.svg) LangChain Quick start agents with any model provider](https://www.langchain.com/langchain)[![Image 6](https://cdn.prod.website-files.com/65b8cd72835ceeacd4449a53/68e8e270417338c7f027082d_d035ce400e48f9bc4dd0578d0e3e3211_icons-1.svg) LangGraph Build custom agents with low-level control](https://www.langchain.com/langgraph)[![Image 7](https://cdn.prod.website-files.com/65b8cd72835ceeacd4449a53/68f20863b71dbae1af829979_DeepAgents.svg) Deep Agents New Use planning, memory, and sub-agents for complex, long-running tasks](https://docs.langchain.com/oss/python/deepagents/overview#deep-agents-overview). [![Image 8: Elipse](https://cdn.prod.website-files.com/65b8cd72835ceeacd4449a53/67332e12b6f650433c154cf3_Ellipse%209.svg) Agent adoption trends](https://www.langchain.com/stateofaiagents#agent-adoption)[![Image 9: Elipse](https://cdn.prod.website-files.com/65b8cd72835ceeacd4449a53/67332e12b6f650433c154cf3_Ellipse%209.svg) Leading agent use cases](https://www.langchain.com/stateofaiagents#leading-agent)[![Image 10: Elipse](https://cdn.prod.website-files.com/65b8cd72835ceeacd4449a53/67332e12b6f650433c154cf3_Ellipse%209.svg) Controls & guardrails for agents](https://www.langchain.com/stateofaiagents#tracing-and-human-oversight)[![Image 11: Elipse](https://cdn.prod.website-files.com/65b8cd72835ceeacd4449a53/67332e12b6f650433c154cf3_Ellipse%209.svg) Biggest challenges to deploying agents in production](https://www.langchain.com/stateofaiagents#barriers-and-challenges)[![Image 12: Elipse](https://cdn.prod.website-files.com/65b8cd72835ceeacd4449a53/67332e12b6f650433c154cf3_Ellipse%209.svg) Agent success stories](https://www.langchain.com/stateofaiagents#cursor-steals-the-spotlight)[![Image 13: Elipse](https://cdn.prod.website-files.com/65b8cd72835ceeacd4449a53/67332e12b6f650433c154cf3_Ellipse%209.svg) Emerging themes in AI agent adoption](https://www.langchain.com/stateofaiagents#ai-agent-adoption). ![Image 22: What kind of tool permissions does your agent have?](https://cdn.prod.website-files.com/65b8cd72835ceeacd4449a53/67347a4c5f95a63a83de813d_5.%20What%20kind%20of%20tool.svg). ![Image 24: Agent controls by company size](https://cdn.prod.website-files.com/65b8cd72835ceeacd4449a53/67347ae4ed9686aad4541a4f_7.%20Agent%20controls.svg). ![Image 26: What is your biggest limitation of putting more agents in production?](https://cdn.prod.website-files.com/65b8cd72835ceeacd4449a53/67347b1aed9686aad4544fef_9.%20What%20is%20your%20biggest%20limitation.svg). ![Image 28](https://cdn.prod.website-files.com/65b8cd72835ceeacd4449a53/67364e9be7da91ffd0a7ed1d_11.%20The%20buzziest%20AI%20Agent%402x.webp). [![Image 29: ](https://cdn.prod.website-files.com/65b8cd72835ceeacd4449a53/65c7f45f23dd5167d2885254_resource-bg-4.jpg) ### LangGraph: Building Controllable Agents](https://www.langchain.com/langgraph)[![Image 30: ](https://cdn.prod.website-files.com/65b8cd72835ceeacd4449a53/65c63f169b489597c789d635_resources-bg-2.jpg) ### \"In the Loop\": A Blog Series on AI Agents](https://blog.langchain.dev/tag/in-the-loop/)[![Image 31: ](https://cdn.prod.website-files.com/65b8cd72835ceeacd4449a53/65c7f45f23dd5167d2885254_resource-bg-4.jpg) ### 5 Breakout Agent Stories](https://www.langchain.com/breakoutagents).",
+              "score": 0.5917474,
+              "raw_content": null
+            },
+            {
+              "url": "https://www.ibm.com/think/topics/ai-agents",
+              "title": "What Are AI Agents? | IBM",
+              "content": "*   [Welcome](https://www.ibm.com/think/ai-agents#605511093). *   [Overview](https://www.ibm.com/think/topics/ai-agents#7281535). *   [What is agentic AI?](https://www.ibm.com/think/topics/agentic-ai#2095054954). *   [Overview](https://www.ibm.com/think/topics/ai-agent-development#1083937704). *   [Building AI agents](https://www.ibm.com/think/topics/how-to-build-an-ai-agent#1083937709). *   [Evolution of AI agents](https://www.ibm.com/think/topics/evolution-of-ai-agents#7281540). *   [Overview](https://www.ibm.com/think/topics/ai-agent-types#72820454). *   [Overview](https://www.ibm.com/think/topics/components-of-ai-agents#498277090). *   [Communication](https://www.ibm.com/think/topics/ai-agent-communication#498277088). *   [Learning](https://www.ibm.com/think/topics/ai-agent-learning#498277087). *   [Memory](https://www.ibm.com/think/topics/ai-agent-memory#498277086). *   [Perception](https://www.ibm.com/think/topics/ai-agent-perception#498277085). *   [Planning](https://www.ibm.com/think/topics/ai-agent-planning#498277084). *   [What is agent orchestration?](https://www.ibm.com/think/topics/ai-agent-orchestration#228874317). *   [Hierarchical AI agents](https://www.ibm.com/think/topics/hierarchical-ai-agents#1003835713). *   [Overview](https://www.ibm.com/think/topics/ai-agent-protocols#1509394340). *   [What is agentic orchestration?](https://www.ibm.com/think/topics/ai-agent-orchestration#2142864945). *   [Overview](https://www.ibm.com/think/insights/top-ai-agent-frameworks#1774455706). *   [What is AI agent evaluation?](https://www.ibm.com/think/topics/ai-agent-evaluation#725195536). *   [AI agent security](https://www.ibm.com/think/topics/ai-agent-security#1268897085). *   [Overview](https://www.ibm.com/think/topics/ai-agent-use-cases#257779831). *   [Customer service](https://www.ibm.com/think/topics/ai-agents-in-customer-service#257779833). *   [Finance](https://www.ibm.com/think/topics/ai-agents-in-finance#257779834). *   [Healthcare](https://www.ibm.com/think/topics/ai-agents-healthcare#257779835). *   [Human resources](https://www.ibm.com/think/topics/ai-agents-in-human-resources#257779836). *   [Marketing](https://www.ibm.com/think/topics/ai-agents-in-marketing#257779837). *   [Procurement](https://www.ibm.com/think/topics/ai-agents-in-procurement#257779838). *   [RevOps](https://www.ibm.com/think/topics/ai-agents-revops#257779839). *   [Sales](https://www.ibm.com/think/topics/ai-agents-in-sales#257779840). *   [Supply chain](https://www.ibm.com/think/topics/ai-agents-supply-chain#598759752). [](https://www.ibm.com/think/topics/ai-agents). [](https://www.ibm.com/think/topics/ai-agents). At the core of AI agents are[large language models(LLMs)](https://www.ibm.com/think/topics/large-language-models). *   The team of developers that design and train the [agentic AI](https://www.ibm.com/think/topics/agentic-ai) system. [](https://www.ibm.com/think/topics/ai-agents). [Learn more](https://www.ibm.com/think/topics/ai-agents). [](https://www.ibm.com/think/topics/ai-agents). [](https://www.ibm.com/think/topics/ai-agents). Simple reflex agents are the simplest agent form that grounds actions on [perception](https://www.ibm.com/think/topics/ai-agent-perception). If there is a natural disaster,AI agents can use[deep learning](https://www.ibm.com/think/topics/deep-learning)algorithms to retrieve the information of users on social media sites that need rescue. [](https://www.ibm.com/think/topics/ai-agents). [](https://www.ibm.com/think/topics/ai-agents). [](https://www.ibm.com/think/topics/ai-agents). [](https://www.ibm.com/think/topics/ai-agents). [](https://www.ibm.com/think/topics/ai-agents) Related solutions. [](https://www.ibm.com/think/topics/ai-agents)Take the next step.",
+              "score": 0.57035583,
+              "raw_content": null
+            },
+            {
+              "url": "https://www.mindstudio.ai/blog/future-of-ai-agents/",
+              "title": "The Future of AI Agents: Trends and Predictions | MindStudio",
+              "content": "AI Models AI Media Workbench Agent Skills Plugin Workflow Capabilities. Where AI agents are heading. ## The AI Agent Inflection Point. While 88% of companies now apply AI in at least one area, only 23% run fully autonomous agent systems. Nearly two-thirds of organizations are experimenting with AI agents, but fewer than one in four have successfully scaled them to production. Customer service leads AI agent adoption. The nature of managerial work is shifting from supervising people to orchestrating systems where humans, AI agents, and robots collaborate. New roles are emerging: agent product managers, AI evaluation writers, and human-in-the-loop validators. Only one in five companies has a mature governance model for autonomous AI agents. AI agents can reduce interaction costs by up to 90% compared to traditional service models. Building AI agents used to require deep technical expertise. The question isn’t whether to deploy AI agents. Workflows  Automation  Integrations### SaaS Pricing Is Breaking: Why Per-Seat Models Don't Survive the AI Agent Era. AI agents compress seat counts by 90%.",
+              "score": 0.4709562,
+              "raw_content": null
+            },
+            {
+              "url": "https://www.youtube.com/watch?v=NWF5Jo0-ziY",
+              "title": "Intro to Agents: What's new and what we've learned - YouTube",
+              "content": "→ https://goo.gle/4rTlaQU Learn how the landscape of AI agents has ... update on what has changed since their last Intro to Agents",
+              "score": 0.46774563,
+              "raw_content": null
+            }
+          ],
+          "request_id": "98739ee7-a4a8-4f19-846c-956fd34226b9"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Research",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Research": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "40fedd03-1aeb-4848-b561-800297687c07",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0c4a6db706fb4fb7ab44943098996948d53ef6d32a8b152c4ae972775d94eb98"
+  },
+  "id": "QFcFtJHcwnvIU3VT",
+  "tags": []
+}
