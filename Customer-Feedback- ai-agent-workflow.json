@@ -1,0 +1,328 @@
+{
+  "name": "Customer-Feedback- ai-agent-workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Customer Feedback",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Name"
+            },
+            {
+              "fieldLabel": "Mobile Number",
+              "fieldType": "number"
+            },
+            {
+              "fieldLabel": "Overall, how satisfied are you with our product/service?",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "much satisfied"
+                  },
+                  {
+                    "option": "satisfied"
+                  },
+                  {
+                    "option": "Neutral"
+                  },
+                  {
+                    "option": "Worst experience"
+                  }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "Would you recommend our product/service to someone you know?",
+              "fieldType": "checkbox",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Yes"
+                  },
+                  {
+                    "option": "No"
+                  }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "How Would you rate our Customer Support?",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Excellent"
+                  },
+                  {
+                    "option": "Good"
+                  },
+                  {
+                    "option": "Bad"
+                  }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "Did the product/service meet your expectation?",
+              "fieldType": "checkbox",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Yes"
+                  },
+                  {
+                    "option": "No"
+                  }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "Any additional comments suggestions?"
+            }
+          ]
+        },
+        "options": {
+          "appendAttribution": true,
+          "customCss": ":root {\n\t--font-family: 'Open Sans', sans-serif;\n\t--font-weight-normal: 400;\n\t--font-weight-bold: 600;\n\t--font-size-body: 12px;\n\t--font-size-label: 14px;\n\t--font-size-test-notice: 12px;\n\t--font-size-input: 14px;\n\t--font-size-header: 20px;\n\t--font-size-paragraph: 14px;\n\t--font-size-link: 12px;\n\t--font-size-error: 12px;\n\t--font-size-html-h1: 28px;\n\t--font-size-html-h2: 20px;\n\t--font-size-html-h3: 16px;\n\t--font-size-html-h4: 14px;\n\t--font-size-html-h5: 12px;\n\t--font-size-html-h6: 10px;\n\t--font-size-subheader: 14px;\n\n\t/* Colors */\n\t--color-background: #fbfcfe;\n\t--color-test-notice-text: #e6a23d;\n\t--color-test-notice-bg: #fefaf6;\n\t--color-test-notice-border: #f6dcb7;\n\t--color-card-bg: #ffffff;\n\t--color-card-border: #dbdfe7;\n\t--color-card-shadow: rgba(99, 77, 255, 0.06);\n\t--color-link: #7e8186;\n\t--color-header: #525356;\n\t--color-label: #555555;\n\t--color-input-border: #dbdfe7;\n\t--color-input-text: #71747A;\n\t--color-focus-border: rgb(90, 76, 194);\n\t--color-submit-btn-bg: #ff6d5a;\n\t--color-submit-btn-text: #ffffff;\n\t--color-error: #ea1f30;\n\t--color-required: #ff6d5a;\n\t--color-clear-button-bg: #7e8186;\n\t--color-html-text: #555;\n\t--color-html-link: #ff6d5a;\n\t--color-header-subtext: #7e8186;\n\n\t/* Border Radii */\n\t--border-radius-card: 8px;\n\t--border-radius-input: 6px;\n\t--border-radius-clear-btn: 50%;\n\t--card-border-radius: 8px;\n\n\t/* Spacing */\n\t--padding-container-top: 24px;\n\t--padding-card: 24px;\n\t--padding-test-notice-vertical: 12px;\n\t--padding-test-notice-horizontal: 24px;\n\t--margin-bottom-card: 16px;\n\t--padding-form-input: 12px;\n\t--card-padding: 24px;\n\t--card-margin-bottom: 16px;\n\n\t/* Dimensions */\n\t--container-width: 448px;\n\t--submit-btn-height: 48px;\n\t--checkbox-size: 18px;\n\n\t/* Others */\n\t--box-shadow-card: 0px 4px 16px 0px var(--color-card-shadow);\n\t--opacity-placeholder: 0.5;\n}"
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.5,
+      "position": [
+        -1056,
+        -96
+      ],
+      "id": "51f83995-9fe9-4077-afc4-42071c95de4e",
+      "name": "On form submission",
+      "webhookId": "1bfb5b16-6bc0-4978-a464-76c99b951d41"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -112,
+        -112
+      ],
+      "id": "f973d72b-50ea-4430-9cf0-898616d6b371",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1FytaVdFqEyUzqWrLiVoyrLqUUXu0pU0jS_5uG-s4N9k",
+          "mode": "list",
+          "cachedResultName": "Customer Feedback",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1FytaVdFqEyUzqWrLiVoyrLqUUXu0pU0jS_5uG-s4N9k/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Feedback details",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1FytaVdFqEyUzqWrLiVoyrLqUUXu0pU0jS_5uG-s4N9k/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $('On form submission').item.json.Name }}",
+            "Mobile Number": "={{ $('On form submission').item.json['Mobile Number'] }}",
+            "Overall, how satisfied are you with our product/service?": "={{ $('On form submission').item.json['Overall, how satisfied are you with our product/service?'] }}",
+            "Would you recommend our product/service to someone you know?": "={{ $('On form submission').item.json['Would you recommend our product/service to someone you know?'][0] }}",
+            "How Would you rate our Customer Support?\r": "={{ $('On form submission').item.json['How Would you rate our Customer Support?'] }}",
+            "Did the product/service meet your expectation?": "={{ $('On form submission').item.json['Did the product/service meet your expectation?'][0] }}",
+            "Any additional comments suggestions?\n": "={{ $('On form submission').item.json['Any additional comments suggestions?'] }}",
+            "Overall Sentiment": "={{ $('Message a model').item.json.content.parts[0].text }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Mobile Number",
+              "displayName": "Mobile Number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Overall, how satisfied are you with our product/service?",
+              "displayName": "Overall, how satisfied are you with our product/service?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Would you recommend our product/service to someone you know?",
+              "displayName": "Would you recommend our product/service to someone you know?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "How Would you rate our Customer Support?\r",
+              "displayName": "How Would you rate our Customer Support?\r",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Did the product/service meet your expectation?",
+              "displayName": "Did the product/service meet your expectation?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Any additional comments suggestions?\n",
+              "displayName": "Any additional comments suggestions?\n",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Overall Sentiment",
+              "displayName": "Overall Sentiment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        176,
+        -112
+      ],
+      "id": "f1e3fb95-b015-49ce-af2f-3e427654ad2d",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "94e0trsrs6iZ8B5A",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.0-flash-lite",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.0-flash-lite"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": ",Collect all customer feedback provided. After all feedback is received, generate a single, well-structured summary report including: Overall Summary, Key Positives, Areas for Improvement, Major Issues (if any), Customer Suggestions, and Final Recommendation. Use clear bullet points and simple, professional language."
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        -640,
+        -288
+      ],
+      "id": "ccfa8999-c084-496f-ae66-dcc7dfc0b470",
+      "name": "Message a model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "FeWc8NSjR2E50grm",
+          "name": "Google Gemini(PaLM) Api account 6"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          },
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "a2a81c54-7a7c-4c78-99fa-df976501be0a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0c4a6db706fb4fb7ab44943098996948d53ef6d32a8b152c4ae972775d94eb98"
+  },
+  "id": "PlI12n0RbaTb2ySh",
+  "tags": []
+}
